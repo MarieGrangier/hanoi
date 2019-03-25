@@ -2,24 +2,25 @@ package cfranc.hanoi;
 
 import java.util.ArrayDeque;
 import java.util.Queue;
+import java.util.Stack;
 
 public class Tour implements IPile<Disque>{
 
 	int hauteurMax = 3;
 	
-	Queue<Disque> disques=new ArrayDeque<>();
+	Stack<Disque> disques=new Stack<>();
 	
 	@Override
 	public boolean empiler(Disque d) {
         boolean res=false;
         if(disques.isEmpty()){
-            disques.offer(d);
+            disques.push(d);
             res=true;
         }
         else{
-            if( (disques.element().d>d.d) && (taille()<hauteurMax) ){
+            if( (disques.peek().d>d.d) && (taille()<hauteurMax) ){
                 res=true;
-                disques.offer(d);
+                disques.push(d);
             }
             else{
                 res=false;
@@ -39,12 +40,16 @@ public class Tour implements IPile<Disque>{
 
 	@Override
 	public Disque depiler() {
-		return disques.poll();
+		return disques.pop();
 	}
 
 	@Override
-	public Disque sommet() {		
-		return disques.peek();
+	public Disque sommet() {	
+		if (this.taille()>0){
+			return disques.peek();
+		}else {
+			return null;
+		}
 	}
 
 	@Override
